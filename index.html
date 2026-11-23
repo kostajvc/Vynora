@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Kostenlose, selbst gestaltete Wallpaper für dein Handy herunterladen.">
+  <title>VibeWalls – Kostenlose Wallpaper</title>
+  <style>
+    :root { color-scheme: dark; --bg:#0c0d17; --panel:#171926; --text:#f6f4ff; --muted:#a4a3b7; --pink:#d78afb; }
+    * { box-sizing:border-box; }
+    body { margin:0; font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif; background:var(--bg); color:var(--text); }
+    header { border-bottom:1px solid #292a3d; padding:20px max(22px,calc((100vw - 1100px)/2)); display:flex; justify-content:space-between; align-items:center; gap:12px; }
+    .logo { font-weight:850; font-size:25px; letter-spacing:-1px; }
+    .logo span { color:var(--pink); }
+    .tag { color:var(--muted); font-size:13px; }
+    main { max-width:1100px; margin:auto; padding:64px 22px; }
+    .intro { max-width:680px; margin:0 auto 42px; text-align:center; }
+    .eyebrow { color:#e4b7ff; text-transform:uppercase; font-size:12px; font-weight:700; letter-spacing:2px; }
+    h1 { font-size:clamp(34px,6vw,62px); line-height:1.08; letter-spacing:-2px; margin:12px 0 18px; }
+    .intro p { color:var(--muted); font-size:17px; line-height:1.6; }
+    .count { color:#b7b1ca; font-size:14px; margin-bottom:19px; }
+    .grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:22px; }
+    .card { background:var(--panel); padding:12px; border:1px solid #2b2d42; border-radius:20px; }
+    .preview { aspect-ratio:9/16; overflow:hidden; border-radius:13px; position:relative; display:grid; place-items:center; }
+    .preview::before { content:""; position:absolute; width:66%; aspect-ratio:1; border-radius:50%; background:rgba(255,255,255,.16); box-shadow:0 0 80px rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.23); }
+    .preview::after { content:"✦"; position:absolute; color:rgba(255,255,255,.68); font-size:44px; text-shadow:0 1px 15px rgba(255,255,255,.25); }
+    .midnight { background:linear-gradient(145deg,#050819,#4338ca,#d946ef); }
+    .sunset { background:linear-gradient(155deg,#ffb86b,#fb7185,#7c3aed); }
+    .ocean { background:linear-gradient(145deg,#001b42,#0891b2,#67e8f9); }
+    .forest { background:linear-gradient(160deg,#042f2e,#059669,#a3e635); }
+    .candy { background:linear-gradient(145deg,#ff8ac4,#c084fc,#818cf8); }
+    .lava { background:linear-gradient(145deg,#23000c,#e11d48,#fb923c); }
+    .details { padding:12px 4px 4px; }
+    .name { font-size:18px; font-weight:700; margin-bottom:5px; }
+    .resolution { font-size:12px; color:var(--muted); margin-bottom:13px; }
+    button { width:100%; padding:13px; border:0; border-radius:11px; background:#eee7ff; color:#21122c; font-weight:800; cursor:pointer; font-size:14px; }
+    button:hover { background:#dcb9fb; }
+    button:focus-visible { outline:3px solid #b16aff; outline-offset:3px; }
+    footer { text-align:center; color:var(--muted); border-top:1px solid #292a3d; padding:26px; font-size:13px; }
+    @media(max-width:700px) { .grid { grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; } .card { padding:8px; border-radius:14px; } .name { font-size:15px; } .tag { display:none; } main { padding-top:44px; } }
+    @media(max-width:380px) { .grid { grid-template-columns:1fr; max-width:320px; margin:auto; } }
+  </style>
+</head>
+<body>
+  <header><div class="logo">Vibe<span>Walls</span> ✦</div><div class="tag">Dein neuer Lieblings-Hintergrund</div></header>
+  <main>
+    <section class="intro">
+      <div class="eyebrow">Free phone wallpapers</div>
+      <h1>Dein Handy. <br>Dein Vibe.</h1>
+      <p>Entdecke kostenlose Wallpaper in wunderschönen Farben. Such dir deinen Favoriten aus und lade ihn mit einem Klick herunter.</p>
+    </section>
+    <div class="count">6 kostenlose Designs · 1080 × 1920 Pixel · PNG</div>
+    <section class="grid" id="gallery" aria-label="Wallpaper Galerie"></section>
+  </main>
+  <footer>VibeWalls ✦ Selbst gestaltete, kostenlose Wallpaper · Ein Lernprojekt</footer>
+  <script>
+    // Du kannst die Namen und Farben hier ganz einfach ändern.
+    const wallpapers = [
+      {name:'Midnight', css:'midnight', colors:['#050819','#4338ca','#d946ef']},
+      {name:'Sunset', css:'sunset', colors:['#ffb86b','#fb7185','#7c3aed']},
+      {name:'Ocean', css:'ocean', colors:['#001b42','#0891b2','#67e8f9']},
+      {name:'Forest', css:'forest', colors:['#042f2e','#059669','#a3e635']},
+      {name:'Candy', css:'candy', colors:['#ff8ac4','#c084fc','#818cf8']},
+      {name:'Lava', css:'lava', colors:['#23000c','#e11d48','#fb923c']}
+    ];
+    const gallery = document.getElementById('gallery');
+    wallpapers.forEach((w, index) => {
+      const card = document.createElement('article');
+      card.className = 'card';
+      card.innerHTML = `<div class="preview ${w.css}" role="img" aria-label="Farbverlauf ${w.name}"></div><div class="details"><div class="name">${w.name}</div><div class="resolution">1080 × 1920 · PNG</div><button type="button">↓ Kostenlos herunterladen</button></div>`;
+      card.querySelector('button').addEventListener('click', () => downloadWallpaper(index));
+      gallery.appendChild(card);
+    });
+    function downloadWallpaper(index) {
+      const wallpaper = wallpapers[index];
+      const canvas = document.createElement('canvas');
+      canvas.width = 1080;
+      canvas.height = 1920;
+      const ctx = canvas.getContext('2d');
+      const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+      gradient.addColorStop(0, wallpaper.colors[0]);
+      gradient.addColorStop(0.52, wallpaper.colors[1]);
+      gradient.addColorStop(1, wallpaper.colors[2]);
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      // Leuchtender Kreis, ohne externe Bilder oder Bildrechte.
+      const glow = ctx.createRadialGradient(540, 900, 10, 540, 900, 520);
+      glow.addColorStop(0, 'rgba(255,255,255,0.26)');
+      glow.addColorStop(0.6, 'rgba(255,255,255,0.11)');
+      glow.addColorStop(1, 'rgba(255,255,255,0)');
+      ctx.fillStyle = glow;
+      ctx.beginPath(); ctx.arc(540, 900, 520, 0, Math.PI * 2); ctx.fill();
+      ctx.beginPath(); ctx.arc(540, 900, 320, 0, Math.PI * 2);
+      ctx.fillStyle='rgba(255,255,255,0.11)'; ctx.fill();
+      ctx.strokeStyle='rgba(255,255,255,0.25)'; ctx.lineWidth=3; ctx.stroke();
+      ctx.fillStyle='rgba(255,255,255,0.78)';
+      ctx.font='110px system-ui'; ctx.textAlign='center'; ctx.textBaseline='middle';
+      ctx.fillText('✦', 540, 900);
+      const link = document.createElement('a');
+      link.href = canvas.toDataURL('image/png');
+      link.download = 'VibeWalls-' + wallpaper.name + '.png';
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+    }
+  </script>
+</body>
+</html>
